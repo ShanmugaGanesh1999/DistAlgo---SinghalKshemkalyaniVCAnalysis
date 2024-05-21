@@ -1,0 +1,15 @@
+For this experiment, we've added 4 lists which will collect the following,
+averageLengthMessageConstruction
+maximumLengthMessageConstruction
+averageLengthMessageUpdation
+maximumLengthMessageUpdation
+
+Each action executes, while constructing the message before sending the message to other processes a counter is maintained and will add the number of messages it has in the message. Similarly, for receiving events, we have a counter that tracks the count of messages it updates in its matrix clock.
+
+Before we store it in the array, for all averages we'll count based on the number of processes. Then finally the output is printed and analyzed.
+
+
+
+As far as difficulty is concerned, I've encounted issues while implementing. 
+
+I resolved it by visulaizing things and making a clear roadmap.

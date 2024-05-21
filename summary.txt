@@ -1,0 +1,61 @@
+From the algorithm's last output, I'll prove the algorithm's correctness.
+
+State 36 (before sending) for the p4
+
+index | timestamp4 | lastupdated4 | lastsent4
+------------------------------------------
+0       | 8             | 12            | 0
+------------------------------------------
+1       | 6             | 11            | 0
+------------------------------------------
+2       | 7             | 10            | 0
+------------------------------------------
+3       | 13            | 12            | 9
+------------------------------------------
+4       | 13            | 0             | -1
+
+messages of process 4 -> 3 {(4,13),(0,8),(1,6),(2,7),(3,13)}
+
+State 55 (after receiving) for the p3
+
+index | timestamp3 | lastupdated3 | lastsent3
+------------------------------------------
+0       | 8             | 12            | 6
+------------------------------------------
+1       | 7             | 14            | 10
+------------------------------------------
+2       | 7             | 15            | 11
+------------------------------------------
+3       | 15            | 0             | -1
+------------------------------------------
+4       | 13            | 15            | 13
+
+**********************************************************************
+
+Here process 4 wants to send a message to Process 3
+
+From the table 1, which is the state 36 of process 4:
+1. LS4[3] = 9 => From this, we'll get all the message objects as:
+2. 9 < LU4[j], for all j in index:
+    a. (0,8) where 11 > 9
+    b. (1,6) where 11 > 9
+    c. (2,7) where 10 > 9
+    d. (3,13) where 12 > 9
+    e. finally, it's an internal process (always sent from a sender process), (4,13)
+3. The message {(4,13),(0,8),(1,6),(2,7),(3,13)} seems to be correct according to the Singhal Kshemkalyani algorithm.
+
+4. After receiving the message from p4, process p3 updated its state to 55 and incorporated in table 2:
+    a. (0,8) wasn't updated since it already has the same value. We can see the last updated 3 wasn't changed to 15 (current local timestamp of p3).
+    b. (1,6) wasn't updated because it already has a timestamp greater than the received value.
+    c. (2,7) was updated.
+    d. (3.13) was updated, but it's the internal event of p3, so the timestamp wasn't updated from the message; rather, it was updated with the internal clock.
+    e. (4,13) was updated.
+5. For the updated processes, we can see the lastupdated3 was 15 (current local timestamp of p3). Note: here the lastupdated3 and lastsent3 are 0 and -1, respectively, because it's an internal action.
+
+With this, we can prove the correctness of the implemented algorithm with the Singhal Kshemkalyani Matrix clock.
+
+
+
+The above summary describes the algorithms and their output, in this experiment we will note down the maximum and average length of the message constructed and updates made per number of processes in the distributed system.
+
+from the output.txt, we can infer the values in the form of an array, which we can use for the analysis.
